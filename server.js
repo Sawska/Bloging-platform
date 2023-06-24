@@ -66,15 +66,21 @@ app.post("/login",async (req,res) => {
 app.post("/register",async (req,res) => {
     const username = req.body.username
     const password = req.body.password
+    const passwordRepeat = req.body.passwordRepeat
     const privilage = "User"
     try {
-        userOperations.registerUser(username,password,privilage)
+       const res = await  userOperations.registerUser(username,password,privilage,passwordRepeat)
+       if(!res) 
+       {
+        const message = 'Passwords are not the same'
+        res.rendr("register",{message})
+       }
         req.session.username = username
         req.session.privilage = privilage
         res.render("main")
     } catch {
         const message = "Username alredy taken"
-        res.render("main", {message})
+        res.render("register", {message})
     }
 })
 

@@ -1,7 +1,8 @@
 
 const con = require("./conections");
 const bcrypt =  require("bcrypt");
-async function registerUser(username,password,userObject) {
+async function registerUser(username,password,privilages,passwordRepeat) {
+    if(!passwordsEqual(password,passwordRepeat)) return false
     password = await hashPassword(password)
     return new Promise((resolve,reject) => {
         con.query(`INSERT ITNO Users (username,password,privilages) VALUES('${username}','${password}','${privilages}')`,(err,res) => {
@@ -9,6 +10,9 @@ async function registerUser(username,password,userObject) {
           else resolve(true)
         })
     })
+}
+function passwordsEqual(passowrd,passwordRepeat) {
+    return passowrd == passwordRepeat
 }
 
 function hashPassword(password) {
