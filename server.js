@@ -4,6 +4,7 @@ const app = express();
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const userOperations = require("./MysqlOperations/UserOperations")
+const blogOperations = require("./MysqlOperations/BlogOperations")
 
 app.use(bodyParser.json())
 
@@ -30,7 +31,8 @@ app.use(express.static("public"))
 app.get("/",(req,res) => {
     if(req.session.username)
     {
-        res.render("main")
+        const blogs = blogOperations.selectAllBlogs();
+        res.render("main", {blogs})
     } else {
         res.render("register")
     }
@@ -60,7 +62,8 @@ app.post("/login",async (req,res) => {
     }
     req.session.username = username
     req.session.privilage = userOperations.getUserPrivilage(username)[0].privilage
-    res.render("main")
+    const blogs = blogOperations.selectAllBlogs();
+    res.render("main",{blogs})
 })
 
 app.post("/register",async (req,res) => {
@@ -77,7 +80,8 @@ app.post("/register",async (req,res) => {
        }
         req.session.username = username
         req.session.privilage = privilage
-        res.render("main")
+        const blogs = blogOperations.selectAllBlogs();
+        res.render("main",{blogs})
     } catch {
         const message = "Username alredy taken"
         res.render("register", {message})

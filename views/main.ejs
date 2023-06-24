@@ -17,5 +17,11 @@
           </form>
         </div>
       </nav>
+      <%= if(blogs.length == 0) {%>
+        <h1> There is blogs</h1>
+        <%= } else {%>
+          <%= for(let i = 0;i<blogs.length;i++) {%>
+            <%= }%>
+        <%= }%>
 </body>
 </html>
